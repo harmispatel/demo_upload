@@ -16,25 +16,25 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int selectedIndex = 0;
-  String selectedPage = '';
-  String? _chosenValue = "Delivered";
-
-  List<String> optionText = [
-    "All Orders",
-    "Out for Delivery",
-    "Delivered",
-    "Pending",
-    "Cancelled",
-  ];
-
-  List<IconData> optionIcon = [
-    Icons.shopping_cart,
-    Icons.delivery_dining,
-    Icons.local_shipping,
-    Icons.pending_actions,
-    Icons.cancel,
-  ];
+  // int selectedIndex = 0;
+  // String selectedPage = '';
+  // String? _chosenValue = "Delivered";
+  //
+  // List<String> optionText = [
+  //   "All Orders",
+  //   "Out for Delivery",
+  //   "Delivered",
+  //   "Pending",
+  //   "Cancelled",
+  // ];
+  //
+  // List<IconData> optionIcon = [
+  //   Icons.shopping_cart,
+  //   Icons.delivery_dining,
+  //   Icons.local_shipping,
+  //   Icons.pending_actions,
+  //   Icons.cancel,
+  // ];
 
   @override
   Widget build(BuildContext context) {
