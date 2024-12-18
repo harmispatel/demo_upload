@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/common_colors.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/local_images.dart';
 import '../../../widget/common_appbar.dart';
+import '../../../widget/primary_button.dart';
 import 'order_delivered_screen.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -17,6 +19,14 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   bool isFinished = false;
+
+  Future<void> _dialNumber(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,146 +114,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(
-                          Icons.shopping_cart,
-                          color: CommonColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                    kCommonSpaceH15,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Shop Address - 1",
-                          style: getAppStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: CommonColors.blackColor),
-                        ),
-                        Text(
-                          'Shop No.302, patel road, near garden, Gondal',
-                          style: getAppStyle(
-                              fontSize: 14, color: CommonColors.black54),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: Divider(
-                  color: CommonColors.mGrey500,
-                  thickness: 1,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: CommonColors.primaryColor.withOpacity(0.3 / 2),
-                          shape: BoxShape.circle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.shopping_cart,
-                          color: CommonColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                    kCommonSpaceH15,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Shop Address - 2",
-                          style: getAppStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: CommonColors.blackColor),
-                        ),
-                        Text(
-                          'Shop No.310, gopal plaza, mavdi circle, Rajkot',
-                          style: getAppStyle(
-                              fontSize: 14, color: CommonColors.black54),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: Divider(
-                  color: CommonColors.mGrey500,
-                  thickness: 1,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: CommonColors.primaryColor.withOpacity(0.3 / 2),
-                          shape: BoxShape.circle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.location_on_outlined,
-                          color: CommonColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                    kCommonSpaceH15,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Delivery Location",
-                            style: getAppStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: CommonColors.blackColor),
-                          ),
-                          Text(
-                            'Flat No.404, Khodal apartment, near garden, Gondal',
-                            maxLines: 5,
-                            overflow: TextOverflow.ellipsis,
-                            style: getAppStyle(
-                                fontSize: 14, color: CommonColors.black54),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: Divider(
-                  color: CommonColors.mGrey500,
-                  thickness: 1,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: CommonColors.primaryColor.withOpacity(0.3 / 2),
-                          shape: BoxShape.circle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
                           Icons.card_travel,
                           color: CommonColors.primaryColor,
                         ),
@@ -273,16 +143,247 @@ class _OrderDetailsState extends State<OrderDetails> {
               Padding(
                 padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Divider(
-                  color: CommonColors.mGrey300,
-                  thickness: 4,
+                  color: CommonColors.mGrey500,
+                  thickness: 1,
+                ),
+              ),
+              kCommonSpaceV10,
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: Colors.grey.withOpacity(0.5), width: 0.8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Shop Address - 1",
+                        style: getAppStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: CommonColors.blackColor),
+                      ),
+                      kCommonSpaceV5,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop name : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Patel pasti bhandar',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop address : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Shop No.302, patel road, near garden, Gondal, Gujarat',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop contact : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '99999 88888',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV10,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Call",
+                              buttonColor: CommonColors.greenColor,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {
+                                _dialNumber("8866181825");
+                              },
+                            ),
+                          ),
+                          kCommonSpaceH15,
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Location",
+                              buttonColor: Colors.blue,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {},
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              kCommonSpaceV10,
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: Colors.grey.withOpacity(0.5), width: 0.8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Shop Address - 2",
+                        style: getAppStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: CommonColors.blackColor),
+                      ),
+                      kCommonSpaceV5,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop name : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Khodal pan',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop address : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Shop No.02, near swami mandir, Gondal',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Shop contact : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '99999 88888',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV10,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Call",
+                              buttonColor: CommonColors.greenColor,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {
+                                _dialNumber("8866181825");
+                              },
+                            ),
+                          ),
+                          kCommonSpaceH15,
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Location",
+                              buttonColor: Colors.blue,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {},
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              kCommonSpaceV10,
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: Divider(
+                  color: CommonColors.mGrey500,
+                  thickness: 1,
                 ),
               ),
               kCommonSpaceV10,
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Text(
-                  "3 items in this order",
-                  style: getAppStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                  "5 items in this order :",
+                  style: getAppStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                ),
+              ),
+              kCommonSpaceV10,
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Text(
+                  "Shop - 1 Items :",
+                  style: getAppStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: CommonColors.blackColor),
                 ),
               ),
               kCommonSpaceV10,
@@ -290,10 +391,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                 padding: const EdgeInsets.only(top: 0, right: 15),
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                itemCount: 5,
+                itemCount: 3,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  bool isLastItem = index == 5 - 1;
+                  bool isLastItem = index == 3 - 1;
                   return Column(
                     children: [
                       Padding(
@@ -375,7 +476,108 @@ class _OrderDetailsState extends State<OrderDetails> {
                   );
                 },
               ),
-              kCommonSpaceV5,
+              kCommonSpaceV15,
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Text(
+                  "Shop - 2 Items :",
+                  style: getAppStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: CommonColors.blackColor),
+                ),
+              ),
+              kCommonSpaceV15,
+              ListView.builder(
+                padding: const EdgeInsets.only(top: 0, right: 15),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: 2,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  bool isLastItem = index == 2 - 1;
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5.0, vertical: 0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https://www.quickpantry.in/cdn/shop/products/maggi-masala-instant-noodles-35-g-quick-pantry_500x500.jpg?v=1710539050'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                            kCommonSpaceH10,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Maggi Masala Instant Noodles 35 g',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: getAppStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: CommonColors.blackColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    "x1",
+                                    style: getAppStyle(
+                                      fontSize: 14,
+                                      color: CommonColors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            kCommonSpaceH10,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "₹12",
+                                  style: getAppStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: CommonColors.blackColor,
+                                  ),
+                                ),
+                                Text(
+                                  "₹14",
+                                  style: getAppStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    fontSize: 14,
+                                    color: CommonColors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Add divider only if it's not the last item
+                      if (!isLastItem)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: Divider(
+                            color: CommonColors.mGrey500,
+                            thickness: 1,
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              kCommonSpaceV10,
               Padding(
                 padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Divider(
@@ -383,181 +585,299 @@ class _OrderDetailsState extends State<OrderDetails> {
                   thickness: 4,
                 ),
               ),
+              kCommonSpaceV10,
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                child: Text(
-                  "Bill Details",
-                  style: getAppStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: Colors.grey.withOpacity(0.5), width: 0.8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Customer information :",
+                        style: getAppStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: CommonColors.blackColor),
+                      ),
+                      kCommonSpaceV5,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Customer name : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Rajnish bhai',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Customer address : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'A-101, Kum Kum apprtment, near baps swaminarayan mandir, haveli gali, gondal',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Customer contact : ',
+                            style: getAppStyle(
+                                fontSize: 14, color: CommonColors.blackColor),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '99999 88888',
+                              style: getAppStyle(
+                                  fontSize: 14, color: CommonColors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV10,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Call",
+                              buttonColor: CommonColors.greenColor,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {
+                                _dialNumber("8866181825");
+                              },
+                            ),
+                          ),
+                          kCommonSpaceH15,
+                          Expanded(
+                            child: PrimaryButton(
+                              label: "Location",
+                              buttonColor: Colors.blue,
+                              labelColor: Colors.white,
+                              shadowColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              onPress: () {},
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
+              kCommonSpaceV10,
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 10, bottom: 8, left: 15, right: 15),
-                child: Row(
-                  children: [
-                    Text(
-                      "Item Total",
-                      style: getAppStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      "₹42",
-                      style: getAppStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8, left: 15, right: 15),
-                child: Row(
-                  children: [
-                    Text(
-                      "Delivery Charge",
-                      style: getAppStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const Spacer(),
-                    // Text(
-                    //   "₹${"9"}",
-                    //   style: getAppStyle(
-                    //     color: Colors.grey,
-                    //     decoration: TextDecoration.lineThrough,
-                    //     fontWeight: FontWeight.w600,
-                    //     fontSize: 13,
-                    //   ),
-                    // ),
-                    kCommonSpaceH10,
-                    Text(
-                      "+ ₹20",
-                      style: getAppStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        textDecorationColor: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8, left: 15, right: 15),
-                child: Row(
-                  children: [
-                    Text(
-                      "Coupon Discount",
-                      style: getAppStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      "- ₹8",
-                      style: getAppStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Paid",
-                      style: getAppStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      "₹54",
-                      style: getAppStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: Divider(
+                  color: CommonColors.mGrey300,
+                  thickness: 4,
                 ),
               ),
               kCommonSpaceV10,
               Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: Container(
-                  height: 50,
                   width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    // color: Colors.green.withOpacity(0.3),
-                    image: DecorationImage(
-                        image: AssetImage(LocalImages.img_total_saving_bg),
-                        fit: BoxFit.fill),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: Colors.grey.withOpacity(0.5), width: 0.8),
                   ),
-                  child: Center(
-                    child: RichText(
-                      overflow: TextOverflow.clip,
-                      textAlign: TextAlign.end,
-                      textDirection: TextDirection.rtl,
-                      softWrap: true,
-                      maxLines: 1,
-                      text: TextSpan(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Bill Details",
+                        style: getAppStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Row(
                         children: [
-                          TextSpan(
-                            text: 'Saving ',
+                          Text(
+                            "Item Total",
                             style: getAppStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Colors.green,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
                             ),
                           ),
-                          TextSpan(
-                            text: "₹8",
+                          const Spacer(),
+                          Text(
+                            "₹42",
                             style: getAppStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Colors.green,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " on this order.",
-                            style: getAppStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Colors.green,
-                            ),
-                          ),
-                          const WidgetSpan(
-                            child: Icon(
-                              Icons.star_rate_outlined,
-                              size: 17,
-                              color: Colors.green,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
                             ),
                           ),
                         ],
                       ),
-                    ),
+                      kCommonSpaceV3,
+                      Row(
+                        children: [
+                          Text(
+                            "Delivery Charge",
+                            style: getAppStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const Spacer(),
+                          // Text(
+                          //   "₹${"9"}",
+                          //   style: getAppStyle(
+                          //     color: Colors.grey,
+                          //     decoration: TextDecoration.lineThrough,
+                          //     fontWeight: FontWeight.w600,
+                          //     fontSize: 13,
+                          //   ),
+                          // ),
+                          kCommonSpaceH10,
+                          Text(
+                            "+ ₹20",
+                            style: getAppStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              textDecorationColor: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV3,
+                      Row(
+                        children: [
+                          Text(
+                            "Coupon Discount",
+                            style: getAppStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            "- ₹8",
+                            style: getAppStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV3,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Paid",
+                            style: getAppStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            "₹54",
+                            style: getAppStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                      kCommonSpaceV10,
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          // color: Colors.green.withOpacity(0.3),
+                          image: DecorationImage(
+                              image:
+                                  AssetImage(LocalImages.img_total_saving_bg),
+                              fit: BoxFit.fill),
+                        ),
+                        child: Center(
+                          child: RichText(
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.end,
+                            textDirection: TextDirection.rtl,
+                            softWrap: true,
+                            maxLines: 1,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Saving ',
+                                  style: getAppStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "₹8",
+                                  style: getAppStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " on this order.",
+                                  style: getAppStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                const WidgetSpan(
+                                  child: Icon(
+                                    Icons.star_rate_outlined,
+                                    size: 17,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

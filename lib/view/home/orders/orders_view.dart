@@ -120,7 +120,9 @@ class _OrdersViewState extends State<OrdersView> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                push(OrderDetails());
+                              },
                               child: Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 22,
