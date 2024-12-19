@@ -6,7 +6,6 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pinput/pinput.dart';
@@ -850,48 +849,6 @@ class CommonUtils {
     return "just now";
   }
 
-  static Future<bool> handleLocationPermission() async {
-    if (Platform.isAndroid) {
-      while (!await Geolocator.isLocationServiceEnabled()) {
-        await openPermissionDialog(
-          Icons.location_on,
-          S.of(mainNavKey.currentContext!)!.locationService,
-          S.of(mainNavKey.currentContext!)!.plEnableLocationService,
-          S.of(mainNavKey.currentContext!)!.enableService,
-          () async {
-            await Geolocator.openLocationSettings();
-          },
-        );
-      }
-    } else {
-      await Geolocator.requestPermission();
-    }
-
-    while (LocationPermission.deniedForever ==
-            await Geolocator.checkPermission() ||
-        LocationPermission.denied == await Geolocator.checkPermission()) {
-      if (Platform.isAndroid) {
-        await openPermissionDialog(
-          Icons.my_location,
-          S.of(mainNavKey.currentContext!)!.locationPermission,
-          S.of(mainNavKey.currentContext!)!.plAllowLocationPermission,
-          S.of(mainNavKey.currentContext!)!.allowPermission,
-          () async {
-            await Geolocator.openAppSettings();
-          },
-        );
-      } else {
-        await Geolocator.requestPermission();
-      }
-    }
-    return true;
-  }
-
-  static Future<Position?> getCurrentPosition() async {
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-  }
 
   /*static Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;

@@ -21,8 +21,8 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () async {
-      pushAndRemoveUntil(LoginView());
+    Future.delayed(Duration.zero, () {
+      mViewModel.attachedContext(context);
     });
   }
 

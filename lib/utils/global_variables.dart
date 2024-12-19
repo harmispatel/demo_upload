@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/login_master.dart';
+
 bool connectivity = true, isNotifyConnectivity = false;
 String languageCode = "en";
 GlobalKey<NavigatorState> mainNavKey = GlobalKey();
-String gUserType = "";
-// UserDetail? globalUserMaster;
-// DUserDetails? globalDUserMaster;
+UserData? globalUserMaster;
+String gUserId = "";
+String? deviceToken = "";
+String deviceType = "";

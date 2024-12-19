@@ -6,6 +6,7 @@ import '../../../utils/common_colors.dart';
 import '../../../utils/constant.dart';
 import '../../../widget/primary_button.dart';
 import '../../home/home_view.dart';
+import '../../profile/profile_view.dart';
 
 class BottomNavBarView extends StatefulWidget {
   const BottomNavBarView({super.key});
@@ -17,12 +18,8 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
   int selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    HomeView(),
-    Center(
-        child: Text(
-      "Profile",
-      style: getAppStyle(fontSize: 22),
-    )),
+    const HomeView(),
+    const ProfileView(),
   ];
 
   void onMenuTapped(int index) {

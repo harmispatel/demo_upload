@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0
+  sdk: ">=3.4.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -41,25 +41,18 @@ dependencies:
   provider: ^6.1.1
   image_picker: ^1.0.7
   pinput: ^3.0.1
-  geolocator: ^10.1.0
-  photo_view: ^0.14.0
-  geocoding: ^2.1.1
-  webview_flutter: ^4.4.4
-  flutter_svg: ^2.0.9
   cached_network_image: ^3.3.1
-  youtube_player_flutter: ^8.1.2
-  live_indicator: ^0.0.4
-  just_audio: ^0.9.36
-  youtube_explode_dart: ^2.1.0
-  firebase_core: ^2.25.4
-  cloud_firestore: ^4.15.4
   animated_text_kit: ^4.2.2
   awesome_dialog: ^3.1.0
   google_fonts: ^6.2.1
   animated_number: ^1.0.2
   swipeable_button_view: ^0.0.2
-  page_transition: ^2.1.0
   google_maps_flutter: ^2.10.0
+  page_transition: ^2.1.0
+  firebase_messaging: ^15.1.6
+  firebase_core: ^3.8.0
+
+
 
 
   #  firebase_core: ^2.24.2

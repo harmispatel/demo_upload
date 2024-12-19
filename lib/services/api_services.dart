@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import '../models/login_master.dart';
+import 'api_url.dart';
+import 'base_client.dart';
 import 'base_services.dart';
 
 class ApiServices extends BaseServices {
-  // AppBaseClient appBaseClient = AppBaseClient();
-  //
+  AppBaseClient appBaseClient = AppBaseClient();
+
   // @override
   // Future<SignupMaster?> signUp({required Map<String, dynamic>? params}) async {
   //   dynamic response = await appBaseClient.postApiCall(
@@ -126,4 +131,24 @@ class ApiServices extends BaseServices {
   //     return null;
   //   }
   // }
+
+  @override
+  Future<LoginMaster?> login({
+    required Map<String, dynamic> params,
+  }) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.LOGIN,
+      postParams: params,
+    );
+    if (response != null) {
+      try {
+        return LoginMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

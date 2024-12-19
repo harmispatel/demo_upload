@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 import 'package:s_d/view/common_view/bottom_navbar/bottom_navbar_view.dart';
 
 import '../../utils/common_colors.dart';
@@ -9,6 +10,7 @@ import '../../utils/constant.dart';
 import '../../utils/local_images.dart';
 import '../../widget/common_appbar.dart';
 import '../../widget/primary_button.dart';
+import 'login_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -18,10 +20,13 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  late LoginViewModel mViewModel;
+
   TextEditingController otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    mViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(
       appBar: const CommonAppBar(
         title: "SOLIKET",
@@ -87,10 +92,10 @@ class _LoginViewState extends State<LoginView> {
           label: "Verify and Proceed",
           lblSize: 18,
           onPress: () {
-            if (otpController.text == "123456") {
-              pushAndRemoveUntil(BottomNavBarView());
+            if (otpController.text.length == 6) {
+              mViewModel.loginApi(pinNumber: otpController.text.trim());
             } else {
-              CommonUtils.showCustomToast(context, "Invalid Pin");
+              CommonUtils.showCustomToast(context, "Please enter Six digits");
             }
           },
         ),

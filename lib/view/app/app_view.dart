@@ -15,6 +15,7 @@ import '../../utils/constant.dart';
 import '../../utils/global_variables.dart';
 import '../common_view/splash/splash_view.dart';
 import '../common_view/splash/splash_view_model.dart';
+import '../login/login_view_model.dart';
 import 'app_model.dart';
 
 class App extends StatefulWidget {
@@ -97,6 +98,8 @@ class AppState extends State<App> {
             providers: [
               ChangeNotifierProvider<SplashViewModel>(
                   create: (_) => SplashViewModel()),
+              ChangeNotifierProvider<LoginViewModel>(
+                  create: (_) => LoginViewModel()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:s_d/view/app/app_view.dart';
-
 import 'database/app_preferences.dart';
 
 Future<void> main() async {
