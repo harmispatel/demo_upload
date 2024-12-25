@@ -1,12 +1,14 @@
 import 'package:animated_number/animated_number.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:s_d/utils/common_utils.dart';
 
 import '../../utils/common_colors.dart';
 import '../../utils/constant.dart';
 import '../../utils/local_images.dart';
 import '../../widget/common_appbar.dart';
-import 'orders/orders_view.dart';
+import 'home_view_model.dart';
+import 'orders/order_view/orders_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,29 +17,39 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  // int selectedIndex = 0;
-  // String selectedPage = '';
-  // String? _chosenValue = "Delivered";
-  //
-  // List<String> optionText = [
-  //   "All Orders",
-  //   "Out for Delivery",
-  //   "Delivered",
-  //   "Pending",
-  //   "Cancelled",
-  // ];
-  //
-  // List<IconData> optionIcon = [
-  //   Icons.shopping_cart,
-  //   Icons.delivery_dining,
-  //   Icons.local_shipping,
-  //   Icons.pending_actions,
-  //   Icons.cancel,
-  // ];
+class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
+  late HomeViewModel mViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      mViewModel.attachedContext(context);
+      WidgetsBinding.instance.addObserver(this);
+
+      mViewModel.getDashBoardDataApi();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      mViewModel.getDashBoardDataApi();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    mViewModel = Provider.of<HomeViewModel>(context);
+
     return Scaffold(
       appBar: CommonAppBar(
         title: 'Home',
@@ -91,7 +103,8 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           AnimatedNumber(
                             startValue: 0,
-                            endValue: 1500.25,
+                            endValue:
+                                num.tryParse(mViewModel.walletAmount) ?? 0,
                             duration: Duration(seconds: 2),
                             isFloatingPoint: true,
                             style: getAppStyle(
@@ -120,8 +133,11 @@ class _HomeViewState extends State<HomeView> {
                       push(
                         OrdersView(
                           title: 'Pending Orders',
+                          filterStatus: '5',
                         ),
-                      );
+                      ).then((_){
+                        mViewModel.getDashBoardDataApi();
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -156,7 +172,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV5,
                           Text(
-                            "5",
+                            mViewModel.pendingOrders,
                             style: getAppStyle(
                               fontSize: 16,
                               color: CommonColors.mWhite,
@@ -174,9 +190,12 @@ class _HomeViewState extends State<HomeView> {
                     onTap: () {
                       push(
                         OrdersView(
-                          title: 'Completed Orders',
+                          title: 'Delivered Orders',
+                          filterStatus: '6',
                         ),
-                      );
+                      ).then((_){
+                        mViewModel.getDashBoardDataApi();
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -202,7 +221,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV15,
                           Text(
-                            "Completed Orders",
+                            "Delivered Orders",
                             style: getAppStyle(
                               fontSize: 20,
                               color: CommonColors.mWhite,
@@ -211,7 +230,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV5,
                           Text(
-                            "11",
+                            mViewModel.deliveredOrders,
                             style: getAppStyle(
                               fontSize: 16,
                               color: CommonColors.mWhite,
@@ -233,9 +252,12 @@ class _HomeViewState extends State<HomeView> {
                     onTap: () {
                       push(
                         OrdersView(
-                          title: 'Out For Delivery',
+                          title: 'On The Way',
+                          filterStatus: '4',
                         ),
-                      );
+                      ).then((_){
+                        mViewModel.getDashBoardDataApi();
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -261,7 +283,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV15,
                           Text(
-                            "Out For Delivery",
+                            "On The Way",
                             style: getAppStyle(
                               fontSize: 20,
                               color: CommonColors.mWhite,
@@ -270,7 +292,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV5,
                           Text(
-                            "2",
+                            mViewModel.onTheWayOrders,
                             style: getAppStyle(
                               fontSize: 16,
                               color: CommonColors.mWhite,
@@ -289,8 +311,11 @@ class _HomeViewState extends State<HomeView> {
                       push(
                         OrdersView(
                           title: 'Cancelled Orders',
+                          filterStatus: '7',
                         ),
-                      );
+                      ).then((_){
+                        mViewModel.getDashBoardDataApi();
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -325,7 +350,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           kCommonSpaceV5,
                           Text(
-                            "1",
+                            mViewModel.cancelledOrders,
                             style: getAppStyle(
                               fontSize: 16,
                               color: CommonColors.mWhite,

@@ -1,35 +1,42 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/common_colors.dart';
 import '../../../utils/constant.dart';
 import '../../../widget/primary_button.dart';
 import '../../home/home_view.dart';
 import '../../profile/profile_view.dart';
+import 'bottom_navbar_view_model.dart';
 
 class BottomNavBarView extends StatefulWidget {
   const BottomNavBarView({super.key});
+
   @override
   State<BottomNavBarView> createState() => _BottomNavBarViewState();
 }
 
 class _BottomNavBarViewState extends State<BottomNavBarView> {
-  int selectedIndex = 0;
+  late BottomNavbarViewModel mViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      mViewModel.attachedContext(context);
+    });
+  }
 
   static final List<Widget> _widgetOptions = <Widget>[
     const HomeView(),
     const ProfileView(),
   ];
 
-  void onMenuTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    mViewModel = Provider.of<BottomNavbarViewModel>(context);
+
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
@@ -74,7 +81,7 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
       },
       child: Scaffold(
         body: Center(
-          child: _widgetOptions.elementAt(selectedIndex),
+          child: _widgetOptions.elementAt(mViewModel.selectedIndex),
         ),
         bottomNavigationBar: Theme(
           data: ThemeData(
@@ -95,11 +102,11 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                 label: 'Profile',
               ),
             ],
-            currentIndex: selectedIndex,
+            currentIndex: mViewModel.selectedIndex,
             selectedItemColor: CommonColors.primaryColor,
             unselectedItemColor: CommonColors.black54,
             showUnselectedLabels: true,
-            onTap: onMenuTapped,
+            onTap: mViewModel.onMenuTapped,
           ),
         ),
       ),

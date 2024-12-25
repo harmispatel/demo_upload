@@ -1,41 +1,43 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../utils/common_colors.dart';
-import '../../../utils/common_utils.dart';
-import '../../../utils/constant.dart';
-import '../../../utils/local_images.dart';
-import '../../../widget/common_appbar.dart';
-import '../../../widget/primary_button.dart';
-import 'order_details.dart';
+import '../../../../utils/common_colors.dart';
+import '../../../../utils/common_utils.dart';
+import '../../../../utils/constant.dart';
+import '../../../../utils/local_images.dart';
+import '../../../../widget/common_appbar.dart';
+import '../../../../widget/primary_button.dart';
+import '../order_details/order_details.dart';
+import 'order_view_model.dart';
 
 class OrdersView extends StatefulWidget {
-  final String title;
+  String title;
+  final String filterStatus;
 
-  const OrdersView({super.key, required this.title});
+   OrdersView(
+      {super.key, required this.title, required this.filterStatus});
 
   @override
   State<OrdersView> createState() => _OrdersViewState();
 }
 
 class _OrdersViewState extends State<OrdersView> {
-  final double fromLat = 22.3039;
-  final double fromLng = 70.8022;
-  final double toLat = 23.0225;
-  final double toLng = 72.5714;
+  late OrderViewModel mViewModel;
+  final ScrollController _scrollController = ScrollController();
 
-  // void openGoogleMaps() async {
-  //   final String googleMapsUrl =
-  //       'https://www.google.com/maps/dir/?api=1&origin=$fromLat,$fromLng&destination=$toLat,$toLng';
-  //
-  //   if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
-  //     await launchUrl(Uri.parse(googleMapsUrl),
-  //         mode: LaunchMode.externalApplication);
-  //   } else {
-  //     throw 'Could not open the map.';
-  //   }
-  // }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      mViewModel.attachedContext(context);
+      _scrollController.addListener(_scrollListener);
+
+      mViewModel.getOrderApi(filterStatus: widget.filterStatus);
+    });
+  }
 
   static Future<void> openGoogleMaps() async {
     const double destinationLatitude = 23.0225;
@@ -52,7 +54,24 @@ class _OrdersViewState extends State<OrdersView> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    mViewModel.resetPage();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    final mViewModel = context.read<OrderViewModel>();
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !mViewModel.isPageFinish) {
+      mViewModel.getOrderApi(filterStatus: widget.filterStatus);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    mViewModel = Provider.of<OrderViewModel>(context);
     return Scaffold(
       appBar: CommonAppBar(
         title: widget.title,
@@ -64,7 +83,7 @@ class _OrdersViewState extends State<OrdersView> {
         padding: const EdgeInsets.only(top: 12, left: 15, right: 15),
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        itemCount: 8,
+        itemCount: mViewModel.orderList.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             width: double.infinity,
@@ -99,7 +118,8 @@ class _OrdersViewState extends State<OrdersView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'SLKT-1234',
+                                    mViewModel.orderList[index].orderNumber ??
+                                        '--',
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: getAppStyle(
@@ -109,7 +129,7 @@ class _OrdersViewState extends State<OrdersView> {
                                     ),
                                   ),
                                   Text(
-                                    '14 Dec 2024 10:19 PM',
+                                    mViewModel.orderList[index].created ?? '--',
                                     style: getAppStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w500,
@@ -121,7 +141,7 @@ class _OrdersViewState extends State<OrdersView> {
                             ),
                             InkWell(
                               onTap: () {
-                                push(OrderDetails());
+                                push(OrderDetails(orderId: mViewModel.orderList[index].orderId ?? 0, orderNo: mViewModel.orderList[index].orderNumber ?? '',));
                               },
                               child: Icon(
                                 Icons.arrow_forward_ios_rounded,
@@ -153,7 +173,8 @@ class _OrdersViewState extends State<OrdersView> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Cash On Delivery',
+                                mViewModel.orderList[index].paymentMethod ??
+                                    '--',
                                 style: getAppStyle(
                                   color: Colors.black54,
                                   fontWeight: FontWeight.w500,
@@ -174,7 +195,7 @@ class _OrdersViewState extends State<OrdersView> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                "₹ 190",
+                                "₹ ${mViewModel.orderList[index].total ?? '--'}",
                                 style: getAppStyle(
                                   color: Colors.black54,
                                   fontWeight: FontWeight.w500,
@@ -195,7 +216,8 @@ class _OrdersViewState extends State<OrdersView> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Order Placed',
+                                mViewModel.orderList[index].status ?? '--',
+
                                 style: getAppStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
@@ -214,7 +236,54 @@ class _OrdersViewState extends State<OrdersView> {
                             child: GestureDetector(
                               onTap: () {
                                 if (widget.title == "Pending Orders") {
-                                  openGoogleMaps();
+
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.info,
+                                    width: kDeviceWidth,
+                                    buttonsBorderRadius: const BorderRadius.all(
+                                      Radius.circular(2),
+                                    ),
+                                    dismissOnTouchOutside: false,
+                                    dismissOnBackKeyPress: false,
+                                    headerAnimationLoop: false,
+                                    animType: AnimType.topSlide,
+                                    title: 'Confirm Your Ride',
+                                    desc: 'Are you sure you want to start this ride?',
+                                    buttonsTextStyle: getAppStyle(),
+                                    descTextStyle: getAppStyle(fontSize: 15),
+                                    titleTextStyle:
+                                    getAppStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                                    showCloseIcon: false,
+                                    btnOk: PrimaryButton(
+                                      label: "Confirm",
+                                      buttonColor: CommonColors.primaryColor,
+                                      labelColor: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      onPress: () async {
+                                        Navigator.pop(context);
+
+                                        await mViewModel.startOrderApi(orderId: mViewModel.orderList[index].orderId.toString());
+                                       mViewModel.resetPage();
+                                       await mViewModel.getOrderApi(filterStatus: "4");
+                                       setState(() {
+                                         widget.title = "On The Way";
+
+                                       });
+                                      },
+                                    ),
+                                    btnCancel: PrimaryButton(
+                                      label: "Cancel",
+                                      buttonColor: CommonColors.mRed,
+                                      labelColor: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      onPress: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ).show();
+
+                                  // openGoogleMaps();
                                 }
                               },
                               child: Row(
@@ -226,11 +295,11 @@ class _OrdersViewState extends State<OrdersView> {
                                         Image.asset(LocalImages.img_delivered),
                                   ),
                                   Text(
-                                    widget.title == "Completed Orders"
+                                    widget.title == "Delivered Orders"
                                         ? 'Delivered'
                                         : widget.title == "Pending Orders"
                                             ? 'Start Ride'
-                                            : widget.title == "Out For Delivery"
+                                            : widget.title == "On The Way"
                                                 ? 'On Way'
                                                 : widget.title ==
                                                         'Cancelled Orders'
@@ -254,7 +323,7 @@ class _OrdersViewState extends State<OrdersView> {
                               buttonColor: CommonColors.primaryColor,
                               labelColor: CommonColors.mWhite,
                               onPress: () {
-                                push(OrderDetails());
+                                push(OrderDetails(orderId: mViewModel.orderList[index].orderId ?? 0, orderNo: mViewModel.orderList[index].orderNumber ?? '',));
                               },
                             ),
                           ),

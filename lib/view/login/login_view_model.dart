@@ -11,7 +11,7 @@ import '../../utils/common_utils.dart';
 import '../../utils/global_variables.dart';
 import '../common_view/bottom_navbar/bottom_navbar_view.dart';
 
-class LoginViewModel with ChangeNotifier{
+class LoginViewModel with ChangeNotifier {
   late BuildContext context;
   final _services = Services();
 
@@ -47,8 +47,4 @@ class LoginViewModel with ChangeNotifier{
     }
     notifyListeners();
   }
-
-
-
-
 }

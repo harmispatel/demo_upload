@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:s_d/utils/constant.dart';
 import 'package:s_d/utils/local_images.dart';
 
 import '../../../utils/common_utils.dart';
+import '../../../utils/global_variables.dart';
 import '../../common_view/bottom_navbar/bottom_navbar_view.dart';
+import '../../common_view/bottom_navbar/bottom_navbar_view_model.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -55,6 +58,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: FloatingActionButton(
               elevation: 0,
               onPressed: () {
+                mainNavKey.currentContext!
+                    .read<BottomNavbarViewModel>()
+                    .onMenuTapped(0);
                 pushAndRemoveUntil(BottomNavBarView());
               },
               foregroundColor: Color(0xff7ac142).withOpacity(0.1),

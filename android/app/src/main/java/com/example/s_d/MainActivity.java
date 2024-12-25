@@ -1,4 +1,4 @@
-package com.example.s_d;
+package com.soliket.deliveryapp;
 
 import io.flutter.embedding.android.FlutterActivity;
 

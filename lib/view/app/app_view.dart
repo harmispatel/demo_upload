@@ -13,9 +13,14 @@ import '../../utils/common_colors.dart';
 import '../../utils/common_utils.dart';
 import '../../utils/constant.dart';
 import '../../utils/global_variables.dart';
+import '../common_view/bottom_navbar/bottom_navbar_view_model.dart';
 import '../common_view/splash/splash_view.dart';
 import '../common_view/splash/splash_view_model.dart';
+import '../home/home_view_model.dart';
+import '../home/orders/order_details/order_details_view_model.dart';
+import '../home/orders/order_view/order_view_model.dart';
 import '../login/login_view_model.dart';
+import '../profile/profile_view_model.dart';
 import 'app_model.dart';
 
 class App extends StatefulWidget {
@@ -75,12 +80,15 @@ class AppState extends State<App> {
                     : false;
     log("InternetChanges :: ${_app.connectionStatus}");
     if (isNotifyConnectivity) {
-      CommonUtils.showSnackBar(
-        connectivity
-            ? S.of(mainNavKey.currentContext!)!.online
-            : S.of(mainNavKey.currentContext!)!.offline,
-        color: connectivity ? CommonColors.greenColor : CommonColors.mRed,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        CommonUtils.showSnackBar(
+          connectivity
+              ? S.of(mainNavKey.currentContext!)!.online
+              : S.of(mainNavKey.currentContext!)!.offline,
+          color: connectivity ? CommonColors.greenColor : CommonColors.mRed,
+        );
+      });
+
     }
   }
 
@@ -100,94 +108,108 @@ class AppState extends State<App> {
                   create: (_) => SplashViewModel()),
               ChangeNotifierProvider<LoginViewModel>(
                   create: (_) => LoginViewModel()),
+              ChangeNotifierProvider<ProfileViewModel>(
+                  create: (_) => ProfileViewModel()),
+              ChangeNotifierProvider<BottomNavbarViewModel>(
+                  create: (_) => BottomNavbarViewModel()),
+              ChangeNotifierProvider<HomeViewModel>(
+                  create: (_) => HomeViewModel()),
+              ChangeNotifierProvider<OrderDetailsViewModel>(
+                  create: (_) => OrderDetailsViewModel()),
+              ChangeNotifierProvider<OrderViewModel>(
+                  create: (_) => OrderViewModel()),
             ],
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              color: CommonColors.primaryColor,
-              navigatorKey: mainNavKey,
-              locale: Locale(Provider.of<AppModel>(context).locale, ""),
-              theme: ThemeData(
-                useMaterial3: true,
-                scaffoldBackgroundColor: CommonColors.mWhite,
-                primaryColor: CommonColors.primaryColor,
-                fontFamily: AppConstants.OUTFIT_FONT,
-                colorScheme: ColorScheme.light(
-                  primary: CommonColors.primaryColor,
-                ),
-                appBarTheme: AppBarTheme(
-                  backgroundColor: CommonColors.bgColor,
-                  foregroundColor: CommonColors.bgColor,
-                  surfaceTintColor: Colors.transparent,
-                  iconTheme: const IconThemeData(
-                    color: CommonColors.primaryColor,
-                  ),
-                  scrolledUnderElevation: 0,
-                  titleTextStyle: getAppStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: CommonColors.primaryColor,
-                  ),
-                ),
-                menuTheme: MenuThemeData(
-                  style: MenuStyle(
-                    surfaceTintColor:
-                        const MaterialStatePropertyAll(CommonColors.mWhite),
-                    shape: MaterialStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+            child: Builder(
+              builder: (context) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  color: CommonColors.primaryColor,
+                  navigatorKey: mainNavKey,
+                  locale: Locale(Provider.of<AppModel>(context).locale, ""),
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    scaffoldBackgroundColor: CommonColors.mWhite,
+                    primaryColor: CommonColors.primaryColor,
+                    fontFamily: AppConstants.OUTFIT_FONT,
+                    colorScheme: ColorScheme.light(
+                      primary: CommonColors.primaryColor,
+                    ),
+                    appBarTheme: AppBarTheme(
+                      backgroundColor: CommonColors.bgColor,
+                      foregroundColor: CommonColors.bgColor,
+                      surfaceTintColor: Colors.transparent,
+                      iconTheme: const IconThemeData(
+                        color: CommonColors.primaryColor,
+                      ),
+                      scrolledUnderElevation: 0,
+                      titleTextStyle: getAppStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: CommonColors.primaryColor,
                       ),
                     ),
-                    elevation: const MaterialStatePropertyAll(20),
-                  ),
-                ),
-                progressIndicatorTheme: const ProgressIndicatorThemeData(
-                  color: CommonColors.primaryColor,
-                  linearMinHeight: 2,
-                ),
-                bottomSheetTheme: const BottomSheetThemeData(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+                    menuTheme: MenuThemeData(
+                      style: MenuStyle(
+                        surfaceTintColor:
+                            const MaterialStatePropertyAll(CommonColors.mWhite),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        elevation: const MaterialStatePropertyAll(20),
+                      ),
+                    ),
+                    progressIndicatorTheme: const ProgressIndicatorThemeData(
+                      color: CommonColors.primaryColor,
+                      linearMinHeight: 2,
+                    ),
+                    bottomSheetTheme: const BottomSheetThemeData(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                      ),
+                    ),
+                    dialogBackgroundColor: CommonColors.mWhite,
+                    drawerTheme: const DrawerThemeData(
+                      surfaceTintColor: CommonColors.mWhite,
+                      backgroundColor: CommonColors.mWhite,
+                    ),
+                    elevatedButtonTheme: ElevatedButtonThemeData(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CommonColors.primaryColor,
+                        foregroundColor: CommonColors.mWhite,
+                      ),
+                    ),
+                    listTileTheme: ListTileThemeData(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    inputDecorationTheme: InputDecorationTheme(
+                      contentPadding: const EdgeInsets.all(0),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintStyle: getAppStyle(
+                        color: CommonColors.mGrey,
+                      ),
                     ),
                   ),
-                ),
-                dialogBackgroundColor: CommonColors.mWhite,
-                drawerTheme: const DrawerThemeData(
-                  surfaceTintColor: CommonColors.mWhite,
-                  backgroundColor: CommonColors.mWhite,
-                ),
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CommonColors.primaryColor,
-                    foregroundColor: CommonColors.mWhite,
-                  ),
-                ),
-                listTileTheme: ListTileThemeData(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                inputDecorationTheme: InputDecorationTheme(
-                  contentPadding: const EdgeInsets.all(0),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  hintStyle: getAppStyle(
-                    color: CommonColors.mGrey,
-                  ),
-                ),
-              ),
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              localeListResolutionCallback: S.delegate.listResolution(
-                  fallback: const Locale(AppConstants.LANGUAGE_ENGLISH, '')),
-              home: SplashView(),
+                  localizationsDelegates: const [
+                    S.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: S.delegate.supportedLocales,
+                  localeListResolutionCallback: S.delegate.listResolution(
+                      fallback: const Locale(AppConstants.LANGUAGE_ENGLISH, '')),
+                  home: SplashView(),
+                );
+              }
             ),
           );
         },

@@ -12,11 +12,11 @@ import '../../../utils/common_utils.dart';
 import '../../../utils/global_variables.dart';
 import '../database/app_preferences.dart';
 import '../generated/i18n.dart';
+import '../view/common_view/bottom_navbar/bottom_navbar_view_model.dart';
 import '../view/login/login_view.dart';
 import 'api_para.dart';
 
 class AppBaseClient {
-
   Future<dynamic> getApiCall({
     String? url,
     Map<String, dynamic>? queryParams,
@@ -44,6 +44,9 @@ class AppBaseClient {
           gUserId = '';
           globalUserMaster = null;
 
+          mainNavKey.currentContext!
+              .read<BottomNavbarViewModel>()
+              .selectedIndex = 0;
           pushAndRemoveUntil(LoginView());
           print("........Get 401 code in response..........");
         } else {
@@ -255,7 +258,7 @@ class AppBaseClient {
           for (var element in images) {
             request.files.add(
               http.MultipartFile(
-                fileKey ?? "profile",
+                fileKey ?? '--',
                 File(element.path).readAsBytes().asStream(),
                 File(element.path).lengthSync(),
                 filename: File(element.path).path.split('/').last,
@@ -273,10 +276,11 @@ class AppBaseClient {
           return jsonDecode(response.body);
         } else if (response.statusCode == 401) {
           await AppPreferences.instance.clear();
-
           gUserId = '';
           globalUserMaster = null;
-
+          mainNavKey.currentContext!
+              .read<BottomNavbarViewModel>()
+              .selectedIndex = 0;
           pushAndRemoveUntil(LoginView());
           print("........Get 401 code in response..........");
         } else {

@@ -25,6 +25,14 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController otpController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      mViewModel.attachedContext(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     mViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(

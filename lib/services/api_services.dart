@@ -1,5 +1,10 @@
 import 'dart:developer';
 
+import 'package:s_d/models/order_details_master.dart';
+
+import '../models/common_master.dart';
+import '../models/dashboard_master.dart';
+import '../models/get_order_master.dart';
 import '../models/login_master.dart';
 import 'api_url.dart';
 import 'base_client.dart';
@@ -143,6 +148,157 @@ class ApiServices extends BaseServices {
     if (response != null) {
       try {
         return LoginMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<CommonMaster?> logOut() async {
+    dynamic response = await appBaseClient.getApiCall(
+      url: ApiUrl.LOG_OUT,
+    );
+    if (response != null) {
+      try {
+        return CommonMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<DashBoardMaster?> getDashBoardData() async {
+    dynamic response = await appBaseClient.getApiCall(
+      url: ApiUrl.DASHBOARD,
+    );
+    if (response != null) {
+      try {
+        return DashBoardMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+
+  @override
+  Future<GetOrderMaster?> getOrder({
+    required Map<String, dynamic> params,
+  }) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.GET_ORDER,
+      postParams: params,
+    );
+    if (response != null) {
+      try {
+        return GetOrderMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<OrderDetailsMaster?> getOrderDetails({
+    required Map<String, dynamic> params,
+  }) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.ORDER_DETAILS,
+      postParams: params,
+    );
+    if (response != null) {
+      try {
+        return OrderDetailsMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<CommonMaster?> startOrder({required Map<String, dynamic> params,}) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.START_ORDER,
+      postParams: params,
+
+    );
+    if (response != null) {
+      try {
+        return CommonMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<CommonMaster?> deliverOrder({required Map<String, dynamic> params,}) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.DELIVER_ORDER,
+      postParams: params,
+
+    );
+    if (response != null) {
+      try {
+        return CommonMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<CommonMaster?> cancelOrder({required Map<String, dynamic> params,}) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.CANCEL_ORDER,
+      postParams: params,
+
+    );
+    if (response != null) {
+      try {
+        return CommonMaster.fromJson(response);
+      } on Exception catch (e) {
+        log("Exception :: $e");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<CommonMaster?> updateLocation({required Map<String, dynamic> params,}) async {
+    dynamic response = await appBaseClient.postFormDataApiCall(
+      url: ApiUrl.UPDATE_LOCATION,
+      postParams: params,
+
+    );
+    if (response != null) {
+      try {
+        return CommonMaster.fromJson(response);
       } on Exception catch (e) {
         log("Exception :: $e");
         return null;
